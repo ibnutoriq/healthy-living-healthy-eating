@@ -1,16 +1,43 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import { recipeOptions } from './data';
 
 export default function App() {
-  const [isClearable, setIsClearable] = useState(true);
+  const [recipe, setRecipe] = useState();
 
-  function toggleClearable() {
-    setIsClearable(!isClearable);
+  function handleOnChangeClick(value) {
+    setRecipe(value);
   }
 
   return (
-    <>
-      <Select isClearable isSearchable name="color" options={[]} />
-    </>
+    <div>
+      <Select
+        isClearable
+        isSearchable
+        name="recipes"
+        options={recipeOptions}
+        onChange={handleOnChangeClick}
+      />
+      {recipe && (
+        <div>
+          <h1>{recipe.label}</h1>
+          <p>
+            <b>Description:</b> &nbsp;
+            {recipe.description}
+          </p>
+          <img src={recipe.image} alt="" className="image" />
+          <p>
+            <b>Ingredient:</b>
+            <ol>
+              {recipe.ingredient.map((ingredient, index) => (
+                <li
+                  key={index}
+                >{`${ingredient.amount} ${ingredient.unit} of ${ingredient.label}`}</li>
+              ))}
+            </ol>
+          </p>
+        </div>
+      )}
+    </div>
   );
 }
